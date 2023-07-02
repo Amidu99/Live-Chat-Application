@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class UserManager extends Thread{
+public class UserManager extends Thread {
     private ArrayList<UserManager > users;
     private Socket socket;
     private BufferedReader reader;
@@ -23,6 +23,7 @@ public class UserManager extends Thread{
             e.printStackTrace();
         }
     }
+
     public void run() {
         try {
             String msg;

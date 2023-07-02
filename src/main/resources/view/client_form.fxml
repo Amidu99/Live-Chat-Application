@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="500.0" fitWidth="850.0" pickOnBounds="true">
          <image>
-            <Image url="@../asset/frames/Frame-chat.png" />
+            <Image url="@../asset/frames/Chat_Frame.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imgUser" fitHeight="100.0" fitWidth="100.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
@@ -29,9 +29,9 @@
             <Font name="Calibri Bold" size="24.0" />
          </font>
       </Label>
-      <ScrollPane blendMode="MULTIPLY" layoutX="5.0" layoutY="109.0" prefHeight="340.0" prefWidth="840.0">
+      <ScrollPane blendMode="MULTIPLY" layoutX="5.0" layoutY="109.0" prefHeight="335.0" prefWidth="840.0">
          <content>
-            <VBox fx:id="vBox" layoutX="2.0" layoutY="2.0" prefHeight="336.0" prefWidth="836.0" />
+            <VBox fx:id="vBox" layoutX="2.0" layoutY="2.0" prefHeight="333.0" prefWidth="838.0" />
          </content>
       </ScrollPane>
       <TextField fx:id="txtMsg" blendMode="MULTIPLY" layoutX="5.0" layoutY="455.0" onAction="#txtMsgOnAction" prefHeight="40.0" prefWidth="750.0" promptText="Write here...">

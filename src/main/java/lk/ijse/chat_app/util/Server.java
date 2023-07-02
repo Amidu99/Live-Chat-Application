@@ -9,7 +9,6 @@ public class Server {
     private static ArrayList<UserManager> users = new ArrayList<UserManager>();
 
     public static void main(String[] args) throws IOException {
-
         ServerSocket serverSocket = new ServerSocket(7777);
         Socket accept;
         while (true) {

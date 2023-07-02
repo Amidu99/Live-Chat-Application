@@ -16,7 +16,7 @@
     <children>
       <ImageView fitHeight="500.0" fitWidth="850.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../asset/frames/Frame-login.png" />
+            <Image url="@../asset/frames/Login_Frame.png" />
          </image>
       </ImageView>
       <ImageView blendMode="SCREEN" fitHeight="500.0" fitWidth="850.0" opacity="0.2" pickOnBounds="true">
@@ -45,7 +45,7 @@
                         <Cursor fx:constant="TEXT" />
                     </cursor>
                 </PasswordField>
-                <Button fx:id="btnLogin" alignment="CENTER" blendMode="OVERLAY" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="90.0" layoutY="185.0" onAction="#btnLoginOnAction" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: #d0c8c8;" text="Login" textAlignment="CENTER">
+                <Button fx:id="btnLogin" alignment="CENTER" blendMode="OVERLAY" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="90.0" layoutY="185.0" onAction="#btnLoginOnAction" opacity="0.95" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: #FAF002;" text="Login" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
@@ -63,12 +63,12 @@
                         <Image url="@../asset/icons/password.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="14.0" layoutY="25.0" prefHeight="30.0" prefWidth="200.0" text="Enter your Username &amp; Password.." textFill="#ffffffd9">
+                <Label layoutX="14.0" layoutY="25.0" prefHeight="30.0" prefWidth="200.0" text="Enter your Username &amp; Password.." textFill="#000000e6">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <Label layoutX="35.0" layoutY="152.0" onMouseClicked="#lblGetHintOnAction" prefHeight="30.0" prefWidth="105.0" text="Forgot Password.." textFill="#ffffffcc">
+                <Label layoutX="35.0" layoutY="152.0" onMouseClicked="#lblGetHintOnAction" prefHeight="30.0" prefWidth="105.0" text="Forgot Password.." textFill="#000000cd">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
@@ -76,7 +76,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Label>
-                <Label fx:id="lblgetHint" layoutX="15.0" layoutY="225.0" prefHeight="15.0" prefWidth="191.0" text="Enter your User_ID to get hint*" textFill="WHITE" visible="false">
+                <Label fx:id="lblgetHint" layoutX="15.0" layoutY="225.0" prefHeight="15.0" prefWidth="191.0" text="Enter your User_ID to get hint*" textFill="#000000cd" visible="false">
                     <font>
                         <Font name="System Bold" size="11.0" />
                     </font>
@@ -89,7 +89,7 @@
                         <Cursor fx:constant="TEXT" />
                     </cursor>
                 </TextField>
-                <Label fx:id="lblHint" graphicTextGap="0.0" layoutX="25.0" layoutY="280.0" prefHeight="15.0" prefWidth="200.0" text="your hint - " textFill="#ff0000b2" visible="false">
+                <Label fx:id="lblHint" graphicTextGap="0.0" layoutX="25.0" layoutY="280.0" prefHeight="15.0" prefWidth="200.0" text="your hint - " textFill="#ff0000e6" visible="false">
                     <font>
                         <Font name="System Bold Italic" size="14.0" />
                     </font>
@@ -98,12 +98,12 @@
         </AnchorPane>
         <AnchorPane fx:id="registerPane" layoutX="590.0" layoutY="150.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="230.0" visible="false">
             <children>
-                <Label graphicTextGap="0.0" layoutX="14.0" layoutY="10.0" prefHeight="25.0" prefWidth="180.0" text="Sign up to get started.." textFill="WHITE">
+                <Label graphicTextGap="0.0" layoutX="14.0" layoutY="10.0" prefHeight="25.0" prefWidth="180.0" text="Sign up to get started..">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
                 </Label>
-                <Label fx:id="lblUid" layoutX="68.0" layoutY="40.0" prefHeight="25.0" prefWidth="95.0" text="Your user ID" textFill="WHITE">
+                <Label fx:id="lblUid" layoutX="68.0" layoutY="40.0" prefHeight="25.0" prefWidth="95.0" text="Your user ID" textFill="#000000b2">
                     <font>
                         <Font name="Segoe UI Black" size="14.0" />
                     </font>
@@ -152,7 +152,7 @@
                         <Cursor fx:constant="TEXT" />
                     </cursor>
                 </TextField>
-                <Button fx:id="btnCreate" alignment="CENTER" blendMode="OVERLAY" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="90.0" layoutY="270.0" mnemonicParsing="false" onAction="#btnCreateOnAction" prefHeight="25.0" prefWidth="55.0" style="-fx-background-color: #d0c8c8;" text="Create" textAlignment="CENTER">
+                <Button fx:id="btnCreate" alignment="CENTER" blendMode="OVERLAY" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="90.0" layoutY="270.0" mnemonicParsing="false" onAction="#btnCreateOnAction" opacity="0.95" prefHeight="25.0" prefWidth="55.0" style="-fx-background-color: #FAF002;" text="Create" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
@@ -160,7 +160,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="btnImg" alignment="CENTER" blendMode="OVERLAY" contentDisplay="CENTER" disable="true" graphicTextGap="0.0" layoutX="25.0" layoutY="230.0" mnemonicParsing="false" onAction="#btnImgOnAction" opacity="0.9" prefHeight="25.0" prefWidth="180.0" style="-fx-background-color: #d0c8c8;" text="Upload your photo here" textAlignment="CENTER">
+                <Button fx:id="btnImg" alignment="CENTER" blendMode="OVERLAY" contentDisplay="CENTER" disable="true" graphicTextGap="0.0" layoutX="25.0" layoutY="230.0" mnemonicParsing="false" onAction="#btnImgOnAction" opacity="0.6" prefHeight="25.0" prefWidth="180.0" style="-fx-background-color: #FAF002;" text="Upload your photo here" textAlignment="CENTER">
                     <font>
                         <Font name="System Bold" size="12.0" />
                     </font>
@@ -174,7 +174,7 @@
             <graphic>
                 <ImageView blendMode="MULTIPLY" fitHeight="40.0" fitWidth="114.0" opacity="0.9" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../asset/buttons/btn-log.png" />
+                        <Image url="@../asset/buttons/btn-login.png" />
                     </image>
                 </ImageView>
             </graphic>
@@ -186,7 +186,7 @@
             <graphic>
                 <ImageView blendMode="MULTIPLY" fitHeight="40.0" fitWidth="114.0" opacity="0.9" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../asset/buttons/btn-reg.png" />
+                        <Image url="@../asset/buttons/btn-register.png" />
                     </image>
                 </ImageView>
             </graphic>
