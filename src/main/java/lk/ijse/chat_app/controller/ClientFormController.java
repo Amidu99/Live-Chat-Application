@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -109,35 +111,34 @@ public class ClientFormController extends Thread {
                 for (int i = 0; i < msgToArray.length - 1; i++) {
                     st += msgToArray[i + 1] + " ";
                 }
-
                 Text text = new Text(st);
                 String firstChars = "";
                 if (st.length() > 3) {
                     firstChars = st.substring(0, 3);
                 }
 
-                if (firstChars.equalsIgnoreCase("img")) {
-                    //for the Images
+                if (firstChars.equalsIgnoreCase("img") || firstChars.equalsIgnoreCase("emo")) {
+                    //for Images or Emojis
                     st = st.substring(3, st.length() - 1);
-
                     File file = new File(st);
                     Image image = new Image(file.toURI().toString());
-
                     ImageView imageView = new ImageView(image);
                     imageView.setFitHeight(150);
                     imageView.setFitWidth(150);
 
+                    if(firstChars.equalsIgnoreCase("emo")){
+                        imageView.setFitHeight(40);
+                        imageView.setFitWidth(40);
+                    }
                     HBox hBox = new HBox(10);
                     hBox.setAlignment(Pos.BOTTOM_RIGHT);
 
                     if (!cmd.equalsIgnoreCase(lblName.getText())) {
                         vBox.setAlignment(Pos.TOP_LEFT);
                         hBox.setAlignment(Pos.CENTER_LEFT);
-
                         Text text1 = new Text("  " + cmd + " :");
                         hBox.getChildren().add(text1);
                         hBox.getChildren().add(imageView);
-
                     } else {
                         hBox.setAlignment(Pos.BOTTOM_RIGHT);
                         hBox.getChildren().add(imageView);
@@ -178,7 +179,7 @@ public class ClientFormController extends Thread {
     public void btnSendOnAction(ActionEvent actionEvent) {
         if(txtMsg.getText()!=null && !txtMsg.getText().isEmpty()) {
             String msg = txtMsg.getText();
-            writer.println(lblName.getText() + ": " + msg + ("\t\t" + lblClock.getText()));
+            writer.println(lblName.getText() + ": " + msg + ("\t  " +lblClock.getText()));
             txtMsg.clear();
             if (msg.equalsIgnoreCase("bye") || msg.equalsIgnoreCase("logout") || msg.equalsIgnoreCase("exit")) {
                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -193,9 +194,20 @@ public class ClientFormController extends Thread {
         fileChooser.setTitle("Open Image");
         this.filePath = fileChooser.showOpenDialog(stage);
         if(filePath!=null) {
-            writer.println(lblName.getText() + " " + "img" + filePath.getPath());
+            writer.println(lblName.getText() +" "+"img"+ filePath.getPath());
         }
     }
 
+    public void btnEmojiOnAction(MouseEvent mouseEvent) {
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        fileChooser = new FileChooser();
+        // Set the initial directory to a specific location
+        fileChooser.setInitialDirectory(new File("C:\\Users\\HP\\Documents\\IntellijProjects\\chat_app_v1.0.0 - Copy\\src\\main\\resources\\asset\\emojis"));
+        fileChooser.setTitle("Open Emoji");
+        this.filePath = fileChooser.showOpenDialog(stage);
+        if(filePath!=null) {
+            writer.println(lblName.getText() +" "+"emo"+ filePath.getPath());
+        }
+    }
     public void txtMsgOnAction(ActionEvent actionEvent) { btnSend.requestFocus(); }
 }

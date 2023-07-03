@@ -31,7 +31,7 @@
       </Label>
       <ScrollPane blendMode="MULTIPLY" layoutX="5.0" layoutY="109.0" prefHeight="335.0" prefWidth="840.0">
          <content>
-            <VBox fx:id="vBox" layoutX="2.0" layoutY="2.0" prefHeight="333.0" prefWidth="838.0" />
+            <VBox fx:id="vBox" prefHeight="333.0" prefWidth="820.0" />
          </content>
       </ScrollPane>
       <TextField fx:id="txtMsg" blendMode="MULTIPLY" layoutX="5.0" layoutY="455.0" onAction="#txtMsgOnAction" prefHeight="40.0" prefWidth="750.0" promptText="Write here...">
@@ -42,7 +42,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <ImageView fx:id="btnImg" blendMode="MULTIPLY" fitHeight="40.0" fitWidth="40.0" layoutX="710.0" layoutY="455.0" onMouseClicked="#btnImgOnAction" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btnImg" blendMode="MULTIPLY" fitHeight="35.0" fitWidth="35.0" layoutX="715.0" layoutY="458.0" onMouseClicked="#btnImgOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../asset/buttons/btn-camera.png" />
          </image>
@@ -65,5 +65,13 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
+      <ImageView fx:id="btnEmoji" blendMode="MULTIPLY" fitHeight="29.0" fitWidth="29.0" layoutX="680.0" layoutY="461.0" onMouseClicked="#btnEmojiOnAction" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/buttons/btn-emoji.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

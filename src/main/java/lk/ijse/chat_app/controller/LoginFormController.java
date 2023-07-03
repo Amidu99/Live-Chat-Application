@@ -2,9 +2,11 @@ package lk.ijse.chat_app.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import com.jfoenix.controls.JFXButton;
@@ -86,6 +88,7 @@ public class LoginFormController {
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.centerOnScreen();
+                stage.getIcons().add(new Image("asset/icons/icon.png"));
                 stage.setTitle(username+"'s chat room");
                 stage.setResizable(false);
                 stage.show();
@@ -195,6 +198,16 @@ public class LoginFormController {
                     e.printStackTrace();
             }
         }
+    }
+
+    public void btnMiniOnAction(MouseEvent mouseEvent) {
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    public void btnCloseOnAction(MouseEvent mouseEvent) {
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     public void txtUsernameOnAction(ActionEvent actionEvent) { txtPassword.requestFocus(); }
