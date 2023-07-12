@@ -29,7 +29,7 @@ public class DBConnection {
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         return connection;
     }
 }

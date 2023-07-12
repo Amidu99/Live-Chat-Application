@@ -5,15 +5,14 @@ import lk.ijse.chat_app.dao.DAOFactory;
 import lk.ijse.chat_app.dao.custom.UserDAO;
 import lk.ijse.chat_app.dto.UserDTO;
 import lk.ijse.chat_app.entity.User;
-import java.io.FileInputStream;
 import java.sql.SQLException;
 
 public class LoginBOImpl implements LoginBO {
     UserDAO userDAO = (UserDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.USER);
 
     @Override
-    public boolean verifyLogin(String username, String password) throws SQLException {
-        return userDAO.verifyLogin(username, password);
+    public boolean verifyLogin(UserDTO dto) throws SQLException {
+        return userDAO.verifyLogin(new User(dto.getUserName(), dto.getPassword()));
     }
 
     @Override
@@ -23,12 +22,7 @@ public class LoginBOImpl implements LoginBO {
 
     @Override
     public boolean addUser(UserDTO dto) throws SQLException, ClassNotFoundException{
-        return userDAO.add(new User(dto.getUserID(), dto.getUserName(), dto.getPassword(), dto.getPassHint()));
-    }
-
-    @Override
-    public boolean addImage(String userID, FileInputStream fis) throws SQLException {
-        return userDAO.addImg(userID, fis);
+        return userDAO.add(new User(dto.getUserID(), dto.getUserName(), dto.getPassword(), dto.getPassHint(), dto.getUserDP()));
     }
 
     @Override
@@ -37,7 +31,12 @@ public class LoginBOImpl implements LoginBO {
     }
 
     @Override
-    public String getUserID(String username, String password) throws SQLException {
-        return userDAO.getUserID(username, password);
+    public String getUserID(UserDTO dto) throws SQLException {
+        return userDAO.getUserID(new User(dto.getUserName(), dto.getPassword()));
+    }
+
+    @Override
+    public boolean isAvailableName(String userName) throws SQLException {
+        return userDAO.isAvailableName(userName);
     }
 }

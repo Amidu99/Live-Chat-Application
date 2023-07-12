@@ -19,6 +19,7 @@ import lk.ijse.chat_app.bo.custom.LoginBO;
 import lk.ijse.chat_app.dto.UserDTO;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -71,15 +72,18 @@ public class LoginFormController {
     @FXML
     private JFXButton btnReg;
 
+    private File file;
+    private FileInputStream fis;
+
     LoginBO loginBO = (LoginBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.LOGIN);
 
     public void btnLoginOnAction(ActionEvent actionEvent) throws SQLException, IOException {
         String username = txtUsername.getText();
         String password = txtPassword.getText();
         if(!username.isEmpty() && !password.isEmpty()){
-            boolean verified = loginBO.verifyLogin(username,password);
+            boolean verified = loginBO.verifyLogin(new UserDTO(username,password));
             if(verified){
-                String userID = loginBO.getUserID(username, password);
+                String userID = loginBO.getUserID(new UserDTO(username,password));
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client_form.fxml"));
                 Parent root = loader.load();
                 ClientFormController clientFormController = loader.getController();
@@ -94,6 +98,7 @@ public class LoginFormController {
                 stage.show();
                 txtUsername.clear();
                 txtPassword.clear();
+                btnLogOnAction(actionEvent);
             }else{
                 new Alert(Alert.AlertType.ERROR, "Login Failed :\nInvalid Username or Password!").show();
             }
@@ -138,34 +143,47 @@ public class LoginFormController {
         String password = txtUpass.getText();
         String passHint = txtUpassHint.getText();
 
-        if(!userName.isEmpty() && !password.isEmpty() && !passHint.isEmpty()){
+        if(!userName.isEmpty() && !password.isEmpty() && !passHint.isEmpty()) {
+            boolean isAvailableName = false;
             try {
-                boolean isAdded = loginBO.addUser(new UserDTO(userID, userName, password, passHint));
-                if (isAdded){
-                    new Alert(Alert.AlertType.INFORMATION, "You have successfully create the user account\nLogin with your Username & Password").show();
-                    setDefaultRegister();
-                    btnLogOnAction(actionEvent);
-                }
-            } catch (SQLException | ClassNotFoundException e) {
-                new Alert(Alert.AlertType.ERROR, "Oops! something went wrong.").show();
-                setDefaultRegister();
+                isAvailableName = loginBO.isAvailableName(userName);
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, "Oops! something went wrong..\n"+e).show();
             }
-        }else{
-            new Alert(Alert.AlertType.ERROR, "Oops! Try again..\nFields cannot be empty.").show();
-        }
-        setDefaultRegister();
+
+            if (!isAvailableName) {
+                if (file != null) {
+                    try {
+                        fis = new FileInputStream(file);
+                    } catch (FileNotFoundException e) {
+                        new Alert(Alert.AlertType.ERROR, "Oops! something went wrong..\n"+e).show();
+                    }
+                } else { new Alert(Alert.AlertType.INFORMATION, "No profile picture added..").show(); }
+
+                try {
+                    boolean isAdded = loginBO.addUser(new UserDTO(userID, userName, password, passHint, fis));
+                    if (isAdded) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "You have successfully create an user account\nNow log with your Username & Password").show();
+                        setDefaultRegister();
+                        btnLogOnAction(actionEvent);
+                    }
+                } catch (SQLException | ClassNotFoundException e) { new Alert(Alert.AlertType.ERROR, "Oops! something went wrong..\n"+e).show(); setDefaultRegister(); }
+            } else { new Alert(Alert.AlertType.WARNING, "This username is already exist..\nPlease try another..").show(); txtUname.requestFocus();}
+        } else { new Alert(Alert.AlertType.ERROR, "Oops! Try again..\nFields cannot be empty.").show();}
     }
 
     private void setDefaultRegister() {
+        file = null;
         txtUname.clear();
         txtUpass.clear();
         txtUpassHint.clear();
         txtUserIDtoHint.clear();
         btnImg.setDisable(true);
+        lblHint.setVisible(false);
         lblgetHint.setVisible(false);
         txtUserIDtoHint.setVisible(false);
-        lblHint.setVisible(false);
     }
+
     public void txtUserIDtoHintOnAction(ActionEvent actionEvent) {
         String userID = txtUserIDtoHint.getText();
         if (!userID.isEmpty()){
@@ -183,21 +201,20 @@ public class LoginFormController {
     }
 
     public void btnImgOnAction(ActionEvent actionEvent) {
-        String userID = txtUid.getText();
+        // Create a file filter for image files
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image files", "*.jpg", "*.jpeg", "*.png", "*.gif");
         FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(new Stage());
+        fileChooser.getExtensionFilters().add(imageFilter);
+        fileChooser.setTitle("Open Image");
+        file = fileChooser.showOpenDialog(new Stage());
         if (file != null) {
             try {
-                FileInputStream fis = new FileInputStream(file);
-                boolean addImg = loginBO.addImage(userID, fis);
-                if (addImg) {
-                    new Alert(Alert.AlertType.INFORMATION, "Image Added Successfully!").show();
-                    btnCreate.requestFocus();
-                }
-            } catch (SQLException | IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
+                fis = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
+        btnCreate.requestFocus();
     }
 
     public void btnMiniOnAction(MouseEvent mouseEvent) {

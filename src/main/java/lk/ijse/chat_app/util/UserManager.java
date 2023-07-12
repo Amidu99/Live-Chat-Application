@@ -13,7 +13,7 @@ public class UserManager extends Thread {
     private BufferedReader reader;
     private PrintWriter writer;
 
-    public UserManager (Socket socket, ArrayList<UserManager > users) {
+    public UserManager (Socket socket, ArrayList<UserManager> users) {
         try {
             this.socket = socket;
             this.users = users;
@@ -36,7 +36,7 @@ public class UserManager extends Thread {
                 }
             }
         } catch (Exception e) {
-            // e.printStackTrace();
+            e.printStackTrace();
         }
         finally {
             try {
@@ -44,7 +44,7 @@ public class UserManager extends Thread {
                 writer.close();
                 socket.close();
             } catch (IOException e) {
-                // e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }

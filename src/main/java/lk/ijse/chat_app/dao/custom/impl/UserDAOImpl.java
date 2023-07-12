@@ -4,33 +4,36 @@ import lk.ijse.chat_app.dao.custom.UserDAO;
 import lk.ijse.chat_app.entity.User;
 import lk.ijse.chat_app.util.CrudUtil;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAOImpl implements UserDAO {
-    @Override
-    public boolean add(User user) throws SQLException {
-        String sql = "INSERT INTO users ( UserID, UserName, Password, PassHint ) VALUES ( ?, ?, ?, ? )";
-        return CrudUtil.execute(sql, user.getUserID(), user.getUserName(), user.getPassword(), user.getPassHint());
-    }
 
     @Override
-    public boolean verifyLogin(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM users WHERE UserName = ? AND Password = ?";
-        ResultSet resultSet = CrudUtil.execute(sql, username, password);
+    public boolean isAvailableName(String userName) throws SQLException {
+        String sql = "SELECT UserName FROM users WHERE UserName = ?";
+        ResultSet resultSet = CrudUtil.execute(sql, userName);
         return resultSet.next();
     }
 
     @Override
-    public boolean addImg(String userID, FileInputStream fis) throws SQLException {
-        String sql = "INSERT INTO user_dp (UserID, DP) VALUES (?, ?)";
-        return CrudUtil.execute(sql, userID, fis);
+    public boolean add(User user) throws SQLException {
+        String sql = "INSERT INTO users ( UserID, UserName, Password, PassHint, UserDP ) VALUES ( ?, ?, ?, ?, ? )";
+        return CrudUtil.execute(sql, user.getUserID(), user.getUserName(), user.getPassword(), user.getPassHint(), user.getUserDP());
     }
 
     @Override
-    public String getUserID(String username, String password) throws SQLException {
+    public boolean verifyLogin(User user) throws SQLException {
+        String sql = "SELECT * FROM users WHERE UserName = ? AND Password = ?";
+        ResultSet resultSet = CrudUtil.execute(sql, user.getUserName(), user.getPassword());
+        return resultSet.next();
+    }
+
+    @Override
+    public String getUserID(User user) throws SQLException {
         String sql = "SELECT UserID FROM users WHERE UserName = ? AND Password = ?";
-        ResultSet resultSet = CrudUtil.execute(sql, username, password);
+        ResultSet resultSet = CrudUtil.execute(sql, user.getUserName(), user.getPassword());
         if(resultSet.next()) {
             return resultSet.getString(1);
         }
@@ -38,9 +41,19 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public ResultSet getDP(String userID) throws SQLException {
-        String sql = "SELECT * FROM user_dp WHERE UserID = ?";
-        return CrudUtil.execute(sql, userID);
+    public InputStream getUserDP(String userID) throws SQLException {
+        String sql = "SELECT UserDP FROM users WHERE UserID = ? ";
+        ResultSet resultSet = CrudUtil.execute(sql, userID);
+        if(resultSet.next()) {
+            return resultSet.getBinaryStream(1);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean updateUserDP(FileInputStream fis, String userID) throws SQLException {
+        String sql = "UPDATE users SET UserDP = ? WHERE UserID = ? ";
+        return CrudUtil.execute(sql, fis, userID);
     }
 
     @Override
@@ -57,10 +70,10 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public String getPasswordHint(String userID) throws SQLException {
-        String sql = "SELECT * FROM users WHERE UserID = ?";
+        String sql = "SELECT PassHint FROM users WHERE UserID = ?";
         ResultSet resultSet = CrudUtil.execute(sql, userID);
         if(resultSet.next()) {
-            return resultSet.getString(4);
+            return resultSet.getString(1);
         }
         return null;
     }

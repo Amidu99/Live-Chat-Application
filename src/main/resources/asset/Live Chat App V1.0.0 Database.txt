@@ -1,0 +1,19 @@
+DROP DATABASE IF EXISTS chat;
+SHOW DATABASES;
+CREATE DATABASE IF NOT EXISTS chat;
+SHOW DATABASES;
+USE chat;
+
+CREATE TABLE users (
+    UserID   varchar(10) not null,
+    UserName varchar(20),
+    Password varchar(20),
+    PassHint varchar(20),
+    UserDP   longblob,
+    constraint users_UserID_uindex
+        unique (UserID)
+);
+
+SHOW TABLES;
+DESC users;
+SELECT * FROM users;

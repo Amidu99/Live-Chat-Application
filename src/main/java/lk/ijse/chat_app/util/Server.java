@@ -11,11 +11,15 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(7777);
         Socket accept;
-        while (true) {
-            accept = serverSocket.accept();
-            UserManager userManager = new UserManager(accept, users);
-            users.add(userManager);
-            userManager.start();
+        try{
+            while (true) {
+                accept = serverSocket.accept();
+                UserManager userManager = new UserManager(accept, users);
+                users.add(userManager);
+                userManager.start();
+            }
+        }finally {
+            serverSocket.close();
         }
     }
 }

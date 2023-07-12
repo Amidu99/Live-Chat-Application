@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="500.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.chat_app.controller.ClientFormController">
@@ -18,8 +19,28 @@
             <Image url="@../asset/frames/Chat_Frame.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="imgUser" fitHeight="100.0" fitWidth="100.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="lblName" alignment="BOTTOM_LEFT" graphicTextGap="0.0" layoutX="110.0" layoutY="67.0" prefHeight="40.0" prefWidth="250.0">
+      <ImageView fx:id="imgUser" fitHeight="100.0" fitWidth="100.0" layoutX="2.0" layoutY="2.0" onMouseClicked="#imgUserMouseClickAction" onMouseEntered="#imgUserMouseInAction" onMouseExited="#imgUserMouseOutAction" pickOnBounds="true" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ImageView>
+      <Rectangle fx:id="recEmoji" arcHeight="50.0" arcWidth="50.0" fill="WHITE" height="31.0" layoutX="679.0" layoutY="460.0" opacity="0.75" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="31.0" />
+      <Rectangle fx:id="recImg" arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="29.0" layoutX="715.0" layoutY="461.0" opacity="0.75" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="35.0" />
+      <Label graphicTextGap="0.0" layoutX="762.0" layoutY="480.0" maxHeight="10.0" maxWidth="25.0" minHeight="10.0" minWidth="25.0" prefHeight="10.0" prefWidth="25.0" text="SEND" textFill="#251010">
+         <font>
+            <Font name="Segoe UI Black" size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDpUpdate" graphicTextGap="0.0" layoutX="110.0" layoutY="45.0" text="Click to update DP" textFill="#3c3333" visible="false">
+         <font>
+            <Font name="Gadugi Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblUserID" layoutX="808.0" layoutY="14.0" visible="false">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblName" alignment="BOTTOM_LEFT" graphicTextGap="0.0" layoutX="110.0" layoutY="67.0" prefHeight="40.0" prefWidth="230.0">
          <font>
             <Font name="Calibri Bold" size="36.0" />
          </font>
@@ -42,7 +63,15 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </TextField>
-      <ImageView fx:id="btnImg" blendMode="MULTIPLY" fitHeight="35.0" fitWidth="35.0" layoutX="715.0" layoutY="458.0" onMouseClicked="#btnImgOnAction" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="btnEmoji" blendMode="MULTIPLY" fitHeight="29.0" fitWidth="29.0" layoutX="680.0" layoutY="461.0" onMouseClicked="#btnEmojiOnAction" onMouseEntered="#btnEmojiEnterOnAction" onMouseExited="#btnEmojiExitOnAction" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../asset/buttons/btn-emoji.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView fx:id="btnImg" blendMode="MULTIPLY" fitHeight="35.0" fitWidth="35.0" layoutX="715.0" layoutY="458.0" onMouseClicked="#btnImgOnAction" onMouseEntered="#btnImgEnterOnAction" onMouseExited="#btnImgExitOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../asset/buttons/btn-camera.png" />
          </image>
@@ -50,7 +79,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Button fx:id="btnSend" alignment="CENTER" blendMode="MULTIPLY" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="760.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnSendOnAction" prefHeight="40.0" prefWidth="85.0" textAlignment="CENTER" textFill="#ff1515">
+      <Button fx:id="btnSend" alignment="CENTER" blendMode="MULTIPLY" contentDisplay="GRAPHIC_ONLY" graphicTextGap="0.0" layoutX="760.0" layoutY="455.0" mnemonicParsing="false" onAction="#btnSendOnAction" onMouseEntered="#btnSendEnterOnAction" onMouseExited="#btnSendExitOnAction" prefHeight="40.0" prefWidth="85.0" textAlignment="CENTER" textFill="#ff1515">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -65,13 +94,5 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <ImageView fx:id="btnEmoji" blendMode="MULTIPLY" fitHeight="29.0" fitWidth="29.0" layoutX="680.0" layoutY="461.0" onMouseClicked="#btnEmojiOnAction" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../asset/buttons/btn-emoji.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
    </children>
 </AnchorPane>

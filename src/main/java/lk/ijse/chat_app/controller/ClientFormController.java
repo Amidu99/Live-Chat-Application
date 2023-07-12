@@ -5,12 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.io.*;
 import java.net.Socket;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
-
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
@@ -30,6 +29,12 @@ import lk.ijse.chat_app.util.Clock;
 public class ClientFormController extends Thread {
     @FXML
     private Label lblName;
+
+    @FXML
+    private Label lblDpUpdate;
+
+    @FXML
+    private Label lblUserID;
 
     @FXML
     private Label lblClock;
@@ -46,6 +51,12 @@ public class ClientFormController extends Thread {
     @FXML
     private Button btnSend;
 
+    @FXML
+    private Rectangle recEmoji;
+
+    @FXML
+    private Rectangle recImg;
+
     ClientBO clientBO = (ClientBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CLIENT);
 
     BufferedReader reader;
@@ -55,11 +66,11 @@ public class ClientFormController extends Thread {
     private FileChooser fileChooser;
     private File filePath;
 
-    public void initialize() throws IOException {
+    public void initialize() {
         Clock.setClock(lblClock);
         try {
             socket = new Socket("localhost", 7777);
-            System.out.println("Socket is connected with server!");
+            System.out.println("New socket is connected with the server..");
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
             this.start();
@@ -70,26 +81,20 @@ public class ClientFormController extends Thread {
 
     public void setUser(String username, String userID) {
         lblName.setText(username);
-        ResultSet resultSet = null;
+        lblUserID.setText(userID);
+        InputStream inputStream = null;
+
         try {
-            resultSet = clientBO.getImage(userID);
+            inputStream = clientBO.getUserDP(userID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            assert resultSet != null;
-            if (resultSet.next()) {
-                Image img = null;
-                try {
-                    img = new Image(resultSet.getBinaryStream("DP"));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                imgUser.setImage(img);
-                imgUser.setPreserveRatio(false);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+        Image image;
+        if(inputStream != null) {
+            image = new Image(inputStream);
+            imgUser.setImage(image);
+            imgUser.setPreserveRatio(false);
         }
     }
 
@@ -118,7 +123,7 @@ public class ClientFormController extends Thread {
                 }
 
                 if (firstChars.equalsIgnoreCase("img") || firstChars.equalsIgnoreCase("emo")) {
-                    //for Images or Emojis
+                    //to add Images or Emojis
                     st = st.substring(3, st.length() - 1);
                     File file = new File(st);
                     Image image = new Image(file.toURI().toString());
@@ -136,7 +141,7 @@ public class ClientFormController extends Thread {
                     if (!cmd.equalsIgnoreCase(lblName.getText())) {
                         vBox.setAlignment(Pos.TOP_LEFT);
                         hBox.setAlignment(Pos.CENTER_LEFT);
-                        Text text1 = new Text("  " + cmd + " :");
+                        Text text1 = new Text(" " + cmd + " : ");
                         hBox.getChildren().add(text1);
                         hBox.getChildren().add(imageView);
                     } else {
@@ -163,7 +168,7 @@ public class ClientFormController extends Thread {
                         hBox.setAlignment(Pos.CENTER_LEFT);
                         hBox.getChildren().add(flow);
                     } else {
-                        Text text2 = new Text(fullMsg + ": Me");
+                        Text text2 = new Text(fullMsg + ": Me ");
                         TextFlow flow2 = new TextFlow(text2);
                         hBox.setAlignment(Pos.BOTTOM_RIGHT);
                         hBox.getChildren().add(flow2);
@@ -171,15 +176,14 @@ public class ClientFormController extends Thread {
                     Platform.runLater(() -> vBox.getChildren().addAll(hBox));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {e.printStackTrace();
         }
     }
 
     public void btnSendOnAction(ActionEvent actionEvent) {
         if(txtMsg.getText()!=null && !txtMsg.getText().isEmpty()) {
             String msg = txtMsg.getText();
-            writer.println(lblName.getText() + ": " + msg + ("\t  " +lblClock.getText()));
+            writer.println(lblName.getText() + ": "+msg+("\t "+lblClock.getText()));
             txtMsg.clear();
             if (msg.equalsIgnoreCase("bye") || msg.equalsIgnoreCase("logout") || msg.equalsIgnoreCase("exit")) {
                 Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -190,7 +194,10 @@ public class ClientFormController extends Thread {
 
     public void btnImgOnAction(MouseEvent mouseEvent) {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-        fileChooser = new FileChooser();
+        // Create a file filter for image files
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image files", "*.jpg", "*.jpeg", "*.png", "*.gif");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(imageFilter);
         fileChooser.setTitle("Open Image");
         this.filePath = fileChooser.showOpenDialog(stage);
         if(filePath!=null) {
@@ -202,12 +209,77 @@ public class ClientFormController extends Thread {
         Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
         fileChooser = new FileChooser();
         // Set the initial directory to a specific location
-        fileChooser.setInitialDirectory(new File("C:\\Users\\HP\\Documents\\IntellijProjects\\chat_app_v1.0.0 - Copy\\src\\main\\resources\\asset\\emojis"));
+        fileChooser.setInitialDirectory(new File("src/main/resources/asset/emojis"));
         fileChooser.setTitle("Open Emoji");
         this.filePath = fileChooser.showOpenDialog(stage);
         if(filePath!=null) {
             writer.println(lblName.getText() +" "+"emo"+ filePath.getPath());
         }
     }
+
+    public void imgUserMouseClickAction(MouseEvent mouseEvent) {
+        String userID = lblUserID.getText();
+        FileChooser.ExtensionFilter imageFilter = new FileChooser.ExtensionFilter("Image files", "*.jpg", "*.jpeg", "*.png", "*.gif");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(imageFilter);
+        fileChooser.setTitle("Open Image");
+        File file = fileChooser.showOpenDialog(new Stage());
+        InputStream inputStream;
+
+        if (file != null && userID != null) {
+            try {
+                FileInputStream fis = new FileInputStream(file);
+                boolean isUpdated = clientBO.updateUserDP(fis, userID);
+                if(isUpdated){
+                    inputStream = clientBO.getUserDP(userID);
+                    Image img;
+                    if(inputStream != null) {
+                        img = new Image(inputStream);
+                        imgUser.setImage(img);
+                        imgUser.setPreserveRatio(false);
+                    }
+                }else{
+                    new Alert(Alert.AlertType.ERROR, "Oops! Something went wrong..\nUser DP not updated.").show();
+                }
+            } catch (FileNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void btnSendEnterOnAction(MouseEvent mouseEvent) {
+        btnSend.setStyle("-fx-background-color: #98FF98;");
+    }
+
+    public void btnSendExitOnAction(MouseEvent mouseEvent) {
+        btnSend.setStyle("-fx-background-image: none;");
+    }
+
+    public void btnEmojiEnterOnAction(MouseEvent mouseEvent) {
+        recEmoji.setStyle("-fx-fill: #F6A507");
+    }
+
+    public void btnEmojiExitOnAction(MouseEvent mouseEvent) {
+        recEmoji.setStyle("-fx-fill: #ffffff");
+    }
+
+    public void btnImgEnterOnAction(MouseEvent mouseEvent) {
+        recImg.setStyle("-fx-fill: #F6A507");
+    }
+
+    public void btnImgExitOnAction(MouseEvent mouseEvent) {
+        recImg.setStyle("-fx-fill: #ffffff");
+    }
+
+    public void imgUserMouseInAction(MouseEvent mouseEvent) {
+        lblDpUpdate.setVisible(true);
+        imgUser.setStyle("-fx-opacity: 0.9");
+    }
+
+    public void imgUserMouseOutAction(MouseEvent mouseEvent) {
+        lblDpUpdate.setVisible(false);
+        imgUser.setStyle("-fx-opacity: 1");
+    }
+
     public void txtMsgOnAction(ActionEvent actionEvent) { btnSend.requestFocus(); }
 }
