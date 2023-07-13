@@ -1,1 +1,2 @@
-By utilizing Multi-Threaded Programming, Java Socket Programming, and Layered Architecture, the Live-Chat Application has been successfully implemented to provide a real-time communication experience.👨‍💻😎
+# Live-Chat-Application💬👨‍💻
+By utilizing Multi-Threaded Programming, Java Socket Programming, and Layered Architecture, the Live-Chat Application has been successfully implemented to provide a real-time communication experience.
