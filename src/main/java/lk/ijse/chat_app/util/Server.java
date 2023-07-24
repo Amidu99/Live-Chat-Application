@@ -6,20 +6,28 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
-    private static ArrayList<UserManager> users = new ArrayList<UserManager>();
+    private static final ArrayList<UserManager> users = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(7777);
-        Socket accept;
-        try{
+    public static void main(String[] args) {
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(7777);
             while (true) {
-                accept = serverSocket.accept();
-                UserManager userManager = new UserManager(accept, users);
+                Socket socket = serverSocket.accept();
+                UserManager userManager = new UserManager(socket, users);
                 users.add(userManager);
                 userManager.start();
             }
-        }finally {
-            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (serverSocket != null) {
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
