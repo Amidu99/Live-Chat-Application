@@ -2,6 +2,6 @@
 By utilizing Multi-Threaded Programming, Java Socket Programming, and Layered Architecture,<br> 
 the Live-Chat Application has been successfully implemented to provide a real-time communication experience.
 
-<img src="https://github.com/Amidu99/Live-Chat-Application/assets/125728431/2b5a4815-b55e-43ef-93ed-80c0fe37cf04" width="800">
-<img src="https://github.com/Amidu99/Live-Chat-Application/assets/125728431/17275d39-0d2f-4b13-8b63-fa282890fd59" width="400">
-<img src="https://github.com/Amidu99/Live-Chat-Application/assets/125728431/802af8ea-98d5-4ff3-beb3-3bce4cc6f2bb" width="400">
+<img src="https://github.com/Amidu99/Live-Chat-Application/assets/125728431/8420060b-317c-4ab1-8de9-16e0dfae14e8" width="800">
+<img src="https://github.com/Amidu99/Live-Chat-Application/assets/125728431/eefe785a-428c-4e3c-9e71-66f15e70da73" width="400">
+<img src="https://github.com/Amidu99/Live-Chat-Application/assets/125728431/e103d3af-fe3e-4904-a704-9f7618dbf724" width="400">
